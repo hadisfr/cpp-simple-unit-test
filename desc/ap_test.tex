@@ -1,0 +1,137 @@
+\documentclass{utap}
+
+\usepackage{amsmath}
+\usepackage{xepersian}
+
+\title{تمرین آزمون نرم‌افزار}
+\author{رامتین خسروی، \href{mailto:hadi.safari@ut.ac.ir?subject=[AP\%20S98 A3]\%20}{هادی صفری}}
+\course{برنامه‌سازی پیشرفته}
+\lecturer{رامتین خسروی}
+\deadline{?، ساعت ۲۳:۵۵}
+
+\begin{document}
+    \maketitle
+
+    \section{مقدمه‌ای بر آزمون نرم‌افزار}
+
+    با آزمون نرم‌افزار و \textit{آزمون واحد}\LTRfootnote{unit testing} و مزایا و لزوم آن‌ها در کلاس درس آشنا شده‌اید. آزمون واحد روشی  برای آزمودن واحدهای کد منبع و اطمینان از مناسب~بودن آن‌ها است. واحد کوچک‌ترین بخش آزمودنی کد منبع است که در زبان‌ها و الگوهای برنامه‌نویسی‌ای که با آن‌ها آشنایی دارید معمولاً معادل یک تابع است.
+    واحد تحت تست\LTRfootnote{unit under test} معمولاً یا تست‌ها را می‌گذراند\LTRfootnote{pass} یا در آن‌ها شکست می‌خورد\LTRfootnote{fail}. گاهی ممکن است آزمونی در حلقهٔ بینهایت بیفتد یا زمان آن تمام شود\LTRfootnote{time out}.
+    برای اطلاعات بیشتر دربارهٔ آزمون واحد می‌توانید به منبع \cite{wikibooks18} مراجعه کنید.
+
+    \subsection{طراحی آزمون‌ها}
+
+    آزمون واحد معمولاً بر اساس \lr{\lstinline{assert}} بنا می‌شود. انتظار می‌رود \lr{\lstinline{assert}}ها برقرار باشند و در غیر این صورت آزمون شکست می‌خورد.
+    یک راه معمول طراحی آزمون واحد آن است که ابتدا شرایط مناسب برای آزمون فراهم می‌گردد؛ مثلاً یک شیء از کلاس تحت آزمون با شرایط مورد نظر ایجاد شود. سپس عملیات خاصی صورت می‌گیرد که هدف آزمون بررسی صحت آن عملیات خاص است؛ مثلاً یکی از توابع کلاس تحت آزمون صدا می‌شود تا محاسبه‌ای را انجام دهد و نتیجهٔ آن ذخیره می‌گردد. در انتها با بازبینی اتفاقات رخ‌داده از صحت عملیات انجام‌شده اطمینان حاصل می‌شود؛ مثلاً نتیجهٔ اجرای تابع محاسباتی مذکور را با مقدار مورد انتظار مقایسه می‌کنیم. این الگو به الگوی \lr{AAA}\LTRfootnote{Arrange, Act, Assert} مشهور است \cite{dietrich14,vocke18}. تعدادی آزمون مختلف بسته به نیاز طراحی و دسته‌بندی می‌شود و نهایتاً یک برنامه یا ابزار آن‌ها را اجرا می‌کند.
+
+    \par در طراحی آزمون واحد خوب است به برخی نکات توجه داشته باشید \cite{dietrich14}:
+    \begin{itemize}[nosep]
+        \item آزمون واحد باید تا حد امکان ساده باشد و منطق پیچیده‌ای نداشته باشد.
+        \item هر آزمون واحد باید دقیقاً یک شرط را بیازماید. در صورت شکست یک آزمون واحد باید بتوان به~راحتی متوجه شد کدام عملکرد دچار مشکل است.
+        % \item گاهی برای محدود~کردن آزمون واحد به یک شرط گاهی باید وابستگی کلاس‌ها یا توابع به کلاس‌ها یا توابع دیگر را از بین برد. برای این کار از انواع \textit{بدل‌های آزمونی}\LTRfootnote{test doubles} (\textit{اشیاء بی‌فایده}\LTRfootnote{dummy objects}، \textit{اشیاء جعلی}\LTRfootnote{fake objects}، \textit{جاسوس آزمونی}\LTRfootnote{test spy}، \textit{باقیماندهٔ آزمونی}\LTRfootnote{test stubs} و \textit{اشیاء مقلد}\LTRfootnote{mock objects}) استفاده می‌شود.
+        % منبع \cite{vocke18} توضیحات بیشتری دربارهٔ  بدل‌های آزمونی در بر دارد.
+        \item آزمون‌ها نباید اثرات جانبی داشته باشند. اگر آزمون‌ها اثر جانبی نداشته باشند تکرارپذیر می‌شوند و ترتیب اجرایشان نیز بی‌اهمیت می‌گردد.
+        \item آزمون واحد باید رفتار قابل مشاهده را بیازماید، نه ساختار داخلی کد را. اجزای خصوصی\LTRfootnote{private} کلاس‌ها نیز معمولاً به~عنوان جزئیات پیاده‌سازی در نظر گرفته می‌شوند.
+        هرچند آزمون واحد باید کد را به~خوبی پوشش دهد، آزمون‌ها نباید بیش از حد به جزئیات پیاده‌سازی گره خورده باشند تا بیش از حد شکننده نشوند. به جای فکر کردن دربارهٔ  این که «آیا اگر مقادیر \lr{\texttt{x}} و \lr{\texttt{y}} وارد شوند، تابع ابتدا تابع \lr{\texttt{a}} و سپس تابع \lr{\texttt{b}} را صدا خواهد کرد و سپس مجموع نتایج را به~عنوان نتیجهٔ نهایی باز می‌گرداند؟» به این فکر کنید که «آیا اگر مقادیر \lr{\texttt{x}} و \lr{\texttt{y}} وارد شوند، نتیجه برابر \lr{\texttt{z}} خواهد بود؟» \cite{vocke18}.\par
+        طراحی موارد آزمون\LTRfootnote{test case} با پیاده‌سازی آزمون‌ها متفاوت است. در بسیاری از روش‌های انتخاب موارد آزمون مناسب، هرچند نه در همهٔ آن‌ها، به ساختار داخلی کد نیز توجه می‌شود تا موارد آزمون بحرانی و شرایط مرزی در نظر گرفته شوند و کد موجود به~خوبی پوشش داده شود؛ اما با تغییر پیاده‌سازی داخلی بدون تغییر رفتار متد یا کلاس، آزمون‌های قبلی نباید شکست بخورند.
+        \item کد اصلی باید فاقد منطق مربوط به تست باشد. استفاده از جملاتی مانند \lr{\lstinline{if (TEST_MODE)}} پیشنهاد نمی‌شود.\par
+        در صورت نیاز به دسترسی یا تغییر فیلدهای درونی کلاس‌ها می‌توانید از روش‌هایی مانند \textit{بدل‌های آزمونی}\LTRfootnote{test doubles} یا تعریف کلاس‌های مشتق کمک بگیرید.
+        \item کد آزمون نیز نوعی کد است و تمام مسائل مربوط به نوشتن کد تمیز دربارهٔ آن صادق است.
+    \end{itemize}
+
+    \subsection{آزمون در \lr{C++}}
+
+    معمولاً برای نوشتن آزمون واحد از چهارچوب‌های خاصی استفاده می‌شود تا نوشتن آزمون‌های پیچیده ساده‌تر شود. در \lr{C++} نیز چنین چارچوب‌هایی وجود دارد؛ در حال حاضر دو چارچوب \lr{\href{https://github.com/abseil/googletest}{Google~Test}} و \lr{\href{https://www.boost.org/doc/libs/1_68_0/libs/test/}{Boost.Test}} رایج‌ترند.
+
+    اما می‌توان با استفاده از ابزارهای خود \lr{C++} نیز آزمون واحد طراحی کرد. برای این کار از ماکروی\LTRfootnote{macro} \lr{\lstinline{assert}} استفاده می‌شود. این ماکرو که در فایل سرآیند\LTRfootnote{header file} \lr{\textit{cassert}} (و \lr{\textit{assert.h}} در \lr{C}) قرار دارد، یک ماکروی پردازشی است که مقدار یک عبارت شرطی را در زمان اجرا ارزیابی می‌کند. اگر عبارت شرطی برقرار بود، \lr{\lstinline{assert}} کاری نمی‌کند؛ در غیر این صورت اجرای برنامه متوقف می‌شود\footnote{با کد خطای ۱۳۴، معادل سیگنال \textit{\lr{SIGABRT}}} و پیام خطایی شامل عبارت شرطی متناظر، نام فایل حاوی \lr{\lstinline{assert}} و شمارهٔ خط \lr{\lstinline{assert}} در آن فایل نمایش می‌یابد\footnote{در جریان خطای متعارف (\textit{stderr})}.
+
+    فرض کنید کلاسی به نام \lr{\lstinline{Person}} وجود دارد که نام افراد را در خود نگه می‌دارد:
+    \begin{latin}\lstinputlisting[firstline=6, lastline=16]{../person/Person.hpp}\end{latin}
+
+    سازندهٔ این کلاس در صورت دریافت \lr{\lstinline{firstname}} خالی استثنای \lr{\lstinline{std::invalid_argument}} پرتاب می‌کند.
+
+    همچنین، این کلاس تابعی به نام \lr{\lstinline{get_fullname}} دارد که قرار است با به هم چسباندن نام و نام خانوادگی افراد نام کامل آن‌ها را برگرداند:
+    \begin{latin}\lstinputlisting[firstline=16, lastline=16]{../person/Person.cpp}\end{latin}
+
+    حال کلاس آزمونی به نام \lr{\lstinline{PersonTest}} برای آزمودن کلاس \lr{\lstinline{Person}} می‌نویسیم:
+    \begin{latin}\lstinputlisting{../person/PersonTest.cpp}\end{latin}
+
+    این کلاس شامل تعدادی متد است که هر یک چیزی را می‌آزمایند. همهٔ آزمون‌ها در متد \lr{\lstinline{Person::run}} صدا شده‌اند که در \lr{\lstinline{main}} فراخوانی شده است. به این ترتیب همهٔ آزمون‌ها اجرا می‌شوند.
+
+    به نحوهٔ آزمون خروجی متدها و همچنین روش استفاده‌شده برای آزمودن استثناها توجه کنید.
+
+    بعد از ترجمه و اجرای همهٔ  کدها، برنامه متوقف می‌شود و خروجی زیر نمایش می‌یابد:
+    \begin{latin}\footnotesize\noindent
+    Assertion failed: \lstinline{(person.get_fullname() == "Edsger Dijkstra")}, function \lstinline{get_fullname_test}, file \lstinline{PersonTest.cpp}, line 17.\\
+    Abort trap: 6
+    \end{latin}
+
+    با اصلاح متد \lr{\lstinline{Person::get_fullname}} به شکل زیر، آزمون با موفقیت گذرانده می‌شود:
+    \begin{latin}\lstinputlisting[firstline=20, lastline=20]{../person/Person.cpp}\end{latin}
+
+    در هنگام استفاده از \lr{\lstinline{assert}} برای انواع مختلف متغیرها به معنی‌دار~بودن و درستی عملگرهای مقایسه‌ای که استفاده می‌کنید دقت کنید. مثلاً دقت کنید در مقایسهٔ انواع عددی ممیز شناور (\lr{\lstinline{float}} و \lr{\lstinline{double}}) عملگر \lr{\lstinline{==}} قابل اتکا نیست و باید از مقایسهٔ قدر مطلق اختلاف دو عدد با یک $\delta$ کوچک استفاده کرد. همچنین هنگام مقایسهٔ اشیاء کلاس‌هایی که خودتان نوشته‌اید باید عملگر مورد استفاده را سربارگذاری کرده باشید.
+
+    می‌توان از روش‌های خلاقانه برای معنی‌دار~کردن پیام خطا استفاده کرد. مثلاً  استفاده از \lr{AND} رایج است \cite{alex17}:
+    \begin{latin}\begin{lstlisting}
+assert(found && "Car could not be found in database");
+    \end{lstlisting}\end{latin}
+
+    \section{تمرین}
+
+    در این جلسهٔ تمرینی از شما انتظار می‌رود برای چند کلاس یا تابع با محوریت آزمون واحد آزمون بنویسید.
+
+    \subsection{نحوهٔ طراحی و پیاده‌سازی}
+
+    \subsubsection[کلاس Triangle]{کلاس \lr{\lstinline[basicstyle=\ttfamily]{Triangle}}}
+
+    کلاس \lr{\lstinline{Triangle}} یک مثلث و برخی ویژگی‌های آن را مدل می‌کند.
+    در پیاده‌سازی این کلاس که در اختیار شما قرار گرفته است چهار نوع اشتباه متفاوت وجود دارد. برای عملکردهای متفاوت این کلاس آزمون طراحی کنید. انتظار می‌رود در صورت وجود هر یک از این چهار اشکال (یا هر ترکیبی از آن‌ها) حداقل یکی از آزمون‌هایی که نوشته‌اید با شکست مواجه شود و در صورت برطرف~شدن همهٔ اشتباهات پیاده‌سازی آزمون‌ها با موفقیت گذرانده شوند.
+
+    اگر نیاز دارید به متغیرهای داخلی کلاس \lr{\lstinline{Triangle}} دسترسی پیدا کنید می‌توانید کلاسی مانند \lr{\lstinline{TriangleUnderTest}} از آن مشتق کنید و به این کلاس گیرنده‌ها\LTRfootnote{getter} یا متدهای مورد نیاز خودتان را اضافه کنید.
+
+    آزمون‌های خود و همهٔ نیازمندی‌های آن‌ها را \textit{فقط} در یک فایل به نام \lr{\textit{TriangleTest.cpp}} بنویسید. این فایل در کنار فایل \lr{\textit{Triangle.hpp}} و به همراه نسخه‌های مختلفی از فایل \lr{\textit{Triangle.cpp}} ترجمه خواهد شد و آزمون‌های شما ارزیابی خواهد گردید.
+    
+    \subsubsection[تابع get\_avg\_of\_vector]{تابع \lr{\lstinline[basicstyle=\ttfamily]{get_avg_of_vector}}}
+
+    تابع \lr{\lstinline{get_avg_of_vector}} با دریافت یک بردار\LTRfootnote{vector} از اعداد صحیح، میانگین اعشاری آن‌ها را محاسبه می‌کند.
+    علاوه بر پیاده‌سازی اصلی، چند نسخهٔ مختلف از پیاده‌سازی این تابع در اختیار شما قرار گرفته است. آزمون‌هایی برای این تابع طراحی کنید که پیاده‌سازی‌های اشتباه حداقل در یکی از آن‌ها شکست بخورند و پیاده‌سازی‌های درست همه را با موفقیت بگذرانند.
+
+    آزمون‌های خود و همهٔ نیازمندی‌های آن‌ها را \textit{فقط} در یک فایل به نام \lr{\textit{GetAvgOfVectorTest.cpp}} بنویسید. این فایل در کنار فایل \lr{\textit{get\_avg\_of\_vector.hpp}} و به همراه نسخه‌های مختلف فایل \lr{\textit{get\_avg\_of\_vector.cpp}} ترجمه خواهد شد و آزمون‌های شما ارزیابی خواهد گردید.
+
+    \subsubsection[تابع satisfies\_hailstone]{تابع \lr{\lstinline[basicstyle=\ttfamily]{satisfies_hailstone}} (اختیاری)}
+
+    تابع \lr{\lstinline{satisfies_hailstone}} عددی می‌گیرد و بررسی می‌کند آیا یک \textit{عدد تگرگی}\LTRfootnote{Hailstone number}\cite{su} است یا نه.
+
+    یک عدد تگرگی عددی است که با شروع از آن و نوشتن دنباله‌ای با این رابطه، دنباله در نقطه‌ای به عدد ۱ برسد:
+    \[ a_n =
+      \begin{cases}
+        \frac{a_{n - 1}}{2} & \quad \text{اگر $a_{n - 1}$ زوج باشد}\\
+        3a_{n - 1} + 1 & \quad \text{اگر $a_{n - 1}$ فرد باشد}\\
+      \end{cases}
+    \]
+
+    \textit{حدس کولاتز}\LTRfootnote{Collatz conjecture} بیان می‌کند که همهٔ اعداد مثبت تگرگی‌اند.
+
+    سعی کنید جز حالت بدیهی ۰، مورد آزمون دیگری بیابید که تابعی که در اختیارتان قرار گرفته است در آن شکست بخورد. اگر این سؤال در زبان \lr{Python} مطرح شده بود می‌توانستید برای آن پاسخی بیابید؟
+
+    \subsection{نحوهٔ تحویل}
+
+    \begin{itemize}
+    \item فایل‌های برنامهٔ خود را با نام‌های \lr{\textit{TriangleTest.cpp}} و \lr{\textit{GetAvgOfVectorTest.cpp}} در صفحهٔ \lr{CECM} درس در \href{https://cecm.ut.ac.ir/mod/assign/view.php?id=76411}{بخش مربوط} بارگذاری کنید.\par
+    نیازی به تحویل آزمون تابع \lstinline{satisfies_hailstone} نیست.
+    \item به فرمت و نام فایل‌های خود دقت کنید. از بارگذاری فایل فشرده خودداری کنید.\par
+    توجه داشته باشید که با توجه به تست خودکار کدهای شما، عدم رعایت این نکات ممکن است منجر به از دست دادن همه یا بخش زیادی از نمرهٔ شما بشود.
+    \item برنامه‌ی شما باید در سیستم‌عامل لینوکس و با مترجم g++ با استاندارد \lr{C++11} ترجمه و در زمان معقول اجرا شود.
+    \item هدف این تمرین یادگیری شماست. لطفاً تمرین را خودتان انجام دهید. در صورت کشف تقلب مطابق قوانین درس با آن برخورد خواهد شد.
+    \end{itemize}
+
+    \begin{thebibliography}{9}
+    \begin{latinitems}
+    \bibitem{alex17} Alex. 2017. Assert and \lstinline{static_assert}. Retrieved from \url{https://www.learncpp.com/cpp-tutorial/7-12a-assert-and-static_assert/}.
+    \bibitem{dietrich14} Erik Dietrich. 2014. Introduction to Unit Testing (Don’t Worry, Your Secret is Safe with Me). Retrived from \url{https://daedtech.com/introduction-to-unit-testing-dont-worry-your-secret-is-safe-with-me/}.
+    \bibitem{su} Francis E. Su, \textit{et al.} ``Hailstone Numbers.'' In \textit{Math Fun Facts}. Retrived from \url{https://www.math.hmc.edu/funfacts/ffiles/10008.5.shtml}.
+    % \bibitem{sumner} Nick Sumner. Exercise: Unit Testing with Google Test. Retrived from \url{http://www.cs.sfu.ca/~wsumner/teaching/exercise-unit-tests.html}.
+    \bibitem{vocke18} Ham Vocke. 2018. The Practical Test Pyramid. Retrived from \url{https://martinfowler.com/articles/practical-test-pyramid.html}.
+    \bibitem{wikibooks18} Wikibooks. 2018. ``Unit Tests.'' In \textit{Wikibooks, The Free Textbook Project}. Retrieved from \url{https://en.wikibooks.org/wiki/Introduction_to_Software_Engineering/Testing/Unit_Tests}.
+    \end{latinitems}
+    \end{thebibliography}
+\end{document}
