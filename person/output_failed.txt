@@ -1,0 +1,30 @@
+$ ./PersonTest.out --success
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PersonTest.out is a Catch v2.8.0 host application.
+Run with -? for options
+
+-------------------------------------------------------------------------------
+`get_fullname` test
+-------------------------------------------------------------------------------
+person/PersonTest.cpp:8
+...............................................................................
+
+person/PersonTest.cpp:10: FAILED:
+  REQUIRE( person.get_fullname() == "Edsger Dijkstra" )
+with expansion:
+  "EdsgerDijkstra" == "Edsger Dijkstra"
+
+-------------------------------------------------------------------------------
+constructor empty firstname test
+-------------------------------------------------------------------------------
+person/PersonTest.cpp:13
+...............................................................................
+
+person/PersonTest.cpp:14: PASSED:
+  REQUIRE_THROWS_AS( Person("", "Dijkstra"), std::invalid_argument )
+
+===============================================================================
+test cases: 2 | 1 passed | 1 failed
+assertions: 2 | 1 passed | 1 failed
+

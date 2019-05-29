@@ -1,10 +1,11 @@
 \documentclass{utap}
 
+\usepackage{fancyvrb}
 \usepackage{amsmath}
 \usepackage{xepersian}
 
 \title{تمرین آزمون نرم‌افزار}
-\author{رامتین خسروی، \href{mailto:hadi.safari@ut.ac.ir?subject=[AP\%20S98 A3]\%20}{هادی صفری}}
+\author{\href{mailto:hadi.safari@ut.ac.ir?subject=[AP\%20S98 UT]\%20}{هادی صفری}}
 \course{برنامه‌سازی پیشرفته}
 \lecturer{رامتین خسروی}
 \deadline{?، ساعت ۲۳:۵۵}
@@ -20,7 +21,7 @@
 
     \subsection{طراحی آزمون‌ها}
 
-    آزمون واحد معمولاً بر اساس \lr{\lstinline{assert}} بنا می‌شود. انتظار می‌رود \lr{\lstinline{assert}}ها برقرار باشند و در غیر این صورت آزمون شکست می‌خورد.
+    آزمون واحد معمولاً بر اساس ادعاها\LTRfootnote{assert} بنا می‌شود. انتظار می‌رود ادعاها برقرار باشند و در غیر این صورت آزمون شکست می‌خورد.
     یک راه معمول طراحی آزمون واحد آن است که ابتدا شرایط مناسب برای آزمون فراهم می‌گردد؛ مثلاً یک شیء از کلاس تحت آزمون با شرایط مورد نظر ایجاد شود. سپس عملیات خاصی صورت می‌گیرد که هدف آزمون بررسی صحت آن عملیات خاص است؛ مثلاً یکی از توابع کلاس تحت آزمون صدا می‌شود تا محاسبه‌ای را انجام دهد و نتیجهٔ آن ذخیره می‌گردد. در انتها با بازبینی اتفاقات رخ‌داده از صحت عملیات انجام‌شده اطمینان حاصل می‌شود؛ مثلاً نتیجهٔ اجرای تابع محاسباتی مذکور را با مقدار مورد انتظار مقایسه می‌کنیم. این الگو به الگوی \lr{AAA}\LTRfootnote{Arrange, Act, Assert} مشهور است \cite{dietrich14,vocke18}. تعدادی آزمون مختلف بسته به نیاز طراحی و دسته‌بندی می‌شود و نهایتاً یک برنامه یا ابزار آن‌ها را اجرا می‌کند.
 
     \par در طراحی آزمون واحد خوب است به برخی نکات توجه داشته باشید \cite{dietrich14}:
@@ -40,44 +41,49 @@
 
     \subsection{آزمون در \lr{C++}}
 
-    معمولاً برای نوشتن آزمون واحد از چهارچوب‌های خاصی استفاده می‌شود تا نوشتن آزمون‌های پیچیده ساده‌تر شود. در \lr{C++} نیز چنین چارچوب‌هایی وجود دارد؛ در حال حاضر دو چارچوب \lr{\href{https://github.com/abseil/googletest}{Google~Test}} و \lr{\href{https://www.boost.org/doc/libs/1_68_0/libs/test/}{Boost.Test}} رایج‌ترند.
+    هرچند می‌توان با استفاده از ماکروی\LTRfootnote{macro} \lr{\lstinline{assert}} که در فایل سرآیند\LTRfootnote{header file} \lr{\path{cassert}} (و \lr{\path{assert.h}} در \lr{C}) قرار دارد آزمون طراحی کرد، معمولاً برای نوشتن آزمون از چهارچوب‌های خاصی استفاده می‌شود تا نوشتن آزمون‌های پیچیده ساده‌تر شود. در \lr{C++} نیز چنین چهارچوب‌هایی وجود دارد؛ در حال حاضر دو چارچوب \lr{\href{https://github.com/abseil/googletest}{Google~Test}} و \lr{\href{https://www.boost.org/doc/libs/1_68_0/libs/test/}{Boost.Test}} رایج‌ترند.
 
-    اما می‌توان با استفاده از ابزارهای خود \lr{C++} نیز آزمون واحد طراحی کرد. برای این کار از ماکروی\LTRfootnote{macro} \lr{\lstinline{assert}} استفاده می‌شود. این ماکرو که در فایل سرآیند\LTRfootnote{header file} \lr{\textit{cassert}} (و \lr{\textit{assert.h}} در \lr{C}) قرار دارد، یک ماکروی پردازشی است که مقدار یک عبارت شرطی را در زمان اجرا ارزیابی می‌کند. اگر عبارت شرطی برقرار بود، \lr{\lstinline{assert}} کاری نمی‌کند؛ در غیر این صورت اجرای برنامه متوقف می‌شود\footnote{با کد خطای ۱۳۴، معادل سیگنال \textit{\lr{SIGABRT}}} و پیام خطایی شامل عبارت شرطی متناظر، نام فایل حاوی \lr{\lstinline{assert}} و شمارهٔ خط \lr{\lstinline{assert}} در آن فایل نمایش می‌یابد\footnote{در جریان خطای متعارف (\textit{stderr})}.
+    چهارچوب \lr{Catch} و نسخهٔ دوم آن (\lr{\href{https://github.com/catchorg/Catch2}{Catch2}}) امکانات زیادی فراهم می‌کند و استفاده از آن نیز نسبتاً آسان‌تر است.
+    به دلایل مذکور، این کتابخانه برای استفاده انتخاب شد.
+    برای آشنایی با این کتابخانه می‌توانید به مخزن گیت‌هاب آن که در آدرس \lr{\url{https://github.com/catchorg/Catch2}} در دسترس است مراجعه کنید.
+    مطالعهٔ مستندات پروژه از جمله صفحات \href{https://github.com/catchorg/Catch2/blob/master/docs/tutorial.md}{آموزش} مقدماتی و \href{https://github.com/catchorg/Catch2/blob/master/docs/assertions.md}{ادعاها} برای آشنایی با کتابخانه و نحوهٔ استفاده از آن پیشنهاد می‌گردد.
+
+    \subsubsection{آزمودن کلاس \lr{\texttt{Person}}}
+    در ادامه نحوهٔ نوشتن آزمون برای یک کلاس ساده را بررسی خواهیم کرد.
 
     فرض کنید کلاسی به نام \lr{\lstinline{Person}} وجود دارد که نام افراد را در خود نگه می‌دارد:
     \begin{latin}\lstinputlisting[firstline=6, lastline=16]{../person/Person.hpp}\end{latin}
 
-    سازندهٔ این کلاس در صورت دریافت \lr{\lstinline{firstname}} خالی استثنای \lr{\lstinline{std::invalid_argument}} پرتاب می‌کند.
+    سازندهٔ این کلاس در صورت دریافت \lr{\lstinline{firstname}} خالی استثنای\LTRfootnote{exception} \lr{\lstinline{std::invalid_argument}} پرتاب می‌کند.
 
     همچنین، این کلاس تابعی به نام \lr{\lstinline{get_fullname}} دارد که قرار است با به هم چسباندن نام و نام خانوادگی افراد نام کامل آن‌ها را برگرداند:
     \begin{latin}\lstinputlisting[firstline=16, lastline=16]{../person/Person.cpp}\end{latin}
 
     حال کلاس آزمونی به نام \lr{\lstinline{PersonTest}} برای آزمودن کلاس \lr{\lstinline{Person}} می‌نویسیم:
-    \begin{latin}\lstinputlisting{../person/PersonTest.cpp}\end{latin}
+    \begin{latin}\lstinputlisting[numbers=left,frame=leftline]{../person/PersonTest.cpp}\end{latin}
 
-    این کلاس شامل تعدادی متد است که هر یک چیزی را می‌آزمایند. همهٔ آزمون‌ها در متد \lr{\lstinline{Person::run}} صدا شده‌اند که در \lr{\lstinline{main}} فراخوانی شده است. به این ترتیب همهٔ آزمون‌ها اجرا می‌شوند.
+    این کلاس شامل تعدادی مورد~آزمون\LTRfootnote{testcase} است که هر یک چیزی را می‌آزمایند. چهارچوب آزمون ‐~به دلیل تعریف~شدن \lr{\lstinline{CATCH_CONFIG_MAIN}}~‐ یک تابع \lr{\lstinline{main}} می‌سازد که همهٔ موارد آزمون را اجرا می‌کند.
 
     به نحوهٔ آزمون خروجی متدها و همچنین روش استفاده‌شده برای آزمودن استثناها توجه کنید.
 
-    بعد از ترجمه و اجرای همهٔ  کدها، برنامه متوقف می‌شود و خروجی زیر نمایش می‌یابد:
-    \begin{latin}\footnotesize\noindent
-    Assertion failed: \lstinline{(person.get_fullname() == "Edsger Dijkstra")}, function \lstinline{get_fullname_test}, file \lstinline{PersonTest.cpp}, line 17.\\
-    Abort trap: 6
+    بعد از ترجمه و اجرای همهٔ  کدها مشاهده می‌شود که یکی از آزمون‌ها که مربوط به عملکرد صحیح متد \lr{\lstinline{Person::get_fullname}} است شکست می‌خورد:
+    \begin{latin}\footnotesize
+    \VerbatimInput{../person/output_failed.txt}
     \end{latin}
 
-    با اصلاح متد \lr{\lstinline{Person::get_fullname}} به شکل زیر، آزمون با موفقیت گذرانده می‌شود:
+    متد مذکور را اصلاح می‌کنیم:
     \begin{latin}\lstinputlisting[firstline=20, lastline=20]{../person/Person.cpp}\end{latin}
 
-    در هنگام استفاده از \lr{\lstinline{assert}} برای انواع مختلف متغیرها به معنی‌دار~بودن و درستی عملگرهای مقایسه‌ای که استفاده می‌کنید دقت کنید. مثلاً دقت کنید در مقایسهٔ انواع عددی ممیز شناور (\lr{\lstinline{float}} و \lr{\lstinline{double}}) عملگر \lr{\lstinline{==}} قابل اتکا نیست و باید از مقایسهٔ قدر مطلق اختلاف دو عدد با یک $\delta$ کوچک استفاده کرد. همچنین هنگام مقایسهٔ اشیاء کلاس‌هایی که خودتان نوشته‌اید باید عملگر مورد استفاده را سربارگذاری کرده باشید.
+    بعد از اصلاح کلاس تحت آزمون، همهٔ آزمون‌ها با موفقیت گذارنده می‌شوند:
+    \begin{latin}\footnotesize
+    \VerbatimInput{../person/output_passed.txt}
+    \end{latin}
 
-    می‌توان از روش‌های خلاقانه برای معنی‌دار~کردن پیام خطا استفاده کرد. مثلاً  استفاده از \lr{AND} رایج است \cite{alex17}:
-    \begin{latin}\begin{lstlisting}
-assert(found && "Car could not be found in database");
-    \end{lstlisting}\end{latin}
+    در هنگام نوشتن ادعاها برای انواع مختلف متغیرها به معنی‌دار~بودن و درستی عملگرهای مقایسه‌ای که استفاده می‌کنید دقت کنید. مثلاً دقت کنید در مقایسهٔ انواع عددی ممیز شناور (\lr{\lstinline{float}} و \lr{\lstinline{double}}) عملگر \lr{\lstinline{==}} قابل اتکا نیست و باید از مقایسهٔ قدر مطلق اختلاف دو عدد با یک $\delta$ کوچک استفاده کرد. همچنین هنگام مقایسهٔ اشیاء کلاس‌هایی که خودتان نوشته‌اید باید عملگر مورد استفاده را سربارگذاری کرده باشید.
 
     \section{تمرین}
 
-    در این جلسهٔ تمرینی از شما انتظار می‌رود برای چند کلاس یا تابع با محوریت آزمون واحد آزمون بنویسید.
+    در این تمرین از شما انتظار می‌رود برای چند کلاس یا تابع با محوریت آزمون واحد و با استفاده از چهارچوب \lr{Catch2} آزمون بنویسید.
 
     \subsection{نحوهٔ طراحی و پیاده‌سازی}
 
@@ -88,16 +94,16 @@ assert(found && "Car could not be found in database");
 
     اگر نیاز دارید به متغیرهای داخلی کلاس \lr{\lstinline{Triangle}} دسترسی پیدا کنید می‌توانید کلاسی مانند \lr{\lstinline{TriangleUnderTest}} از آن مشتق کنید و به این کلاس گیرنده‌ها\LTRfootnote{getter} یا متدهای مورد نیاز خودتان را اضافه کنید.
 
-    آزمون‌های خود و همهٔ نیازمندی‌های آن‌ها را \textit{فقط} در یک فایل به نام \lr{\textit{TriangleTest.cpp}} بنویسید. این فایل در کنار فایل \lr{\textit{Triangle.hpp}} و به همراه نسخه‌های مختلفی از فایل \lr{\textit{Triangle.cpp}} ترجمه خواهد شد و آزمون‌های شما ارزیابی خواهد گردید.
+    آزمون‌های خود و همهٔ نیازمندی‌های آن‌ها را \textit{فقط} در یک فایل به نام \lr{\path{TriangleTest.cpp}} بنویسید. این فایل در کنار فایل‌های \lr{\path{catch.hpp}} و \lr{\path{Triangle.hpp}} و به همراه نسخه‌های مختلفی از فایل \lr{\path{Triangle.cpp}} ترجمه خواهد شد و آزمون‌های شما ارزیابی خواهد گردید.
     
     \subsubsection[تابع get\_avg\_of\_vector]{تابع \lr{\lstinline[basicstyle=\ttfamily]{get_avg_of_vector}}}
 
     تابع \lr{\lstinline{get_avg_of_vector}} با دریافت یک بردار\LTRfootnote{vector} از اعداد صحیح، میانگین اعشاری آن‌ها را محاسبه می‌کند.
     علاوه بر پیاده‌سازی اصلی، چند نسخهٔ مختلف از پیاده‌سازی این تابع در اختیار شما قرار گرفته است. آزمون‌هایی برای این تابع طراحی کنید که پیاده‌سازی‌های اشتباه حداقل در یکی از آن‌ها شکست بخورند و پیاده‌سازی‌های درست همه را با موفقیت بگذرانند.
 
-    آزمون‌های خود و همهٔ نیازمندی‌های آن‌ها را \textit{فقط} در یک فایل به نام \lr{\textit{GetAvgOfVectorTest.cpp}} بنویسید. این فایل در کنار فایل \lr{\textit{get\_avg\_of\_vector.hpp}} و به همراه نسخه‌های مختلف فایل \lr{\textit{get\_avg\_of\_vector.cpp}} ترجمه خواهد شد و آزمون‌های شما ارزیابی خواهد گردید.
+    آزمون‌های خود و همهٔ نیازمندی‌های آن‌ها را \textit{فقط} در یک فایل به نام \lr{\path{GetAvgOfVectorTest.cpp}} بنویسید. این فایل در کنار فایل‌های \lr{\path{catch.hpp}} و \lr{\path{get_avg_of_vector.hpp}} و به همراه نسخه‌های مختلف فایل \lr{\path{get_avg_of_vector.cpp}} ترجمه خواهد شد و آزمون‌های شما ارزیابی خواهد گردید.
 
-    \subsubsection[تابع satisfies\_hailstone]{تابع \lr{\lstinline[basicstyle=\ttfamily]{satisfies_hailstone}} (اختیاری)}
+    \subsubsection[تابع satisfies\_hailstone]{تابع \lr{\lstinline[basicstyle=\ttfamily]{satisfies_hailstone}}\hfill\normalsize\mdseries اختیاری}
 
     تابع \lr{\lstinline{satisfies_hailstone}} عددی می‌گیرد و بررسی می‌کند آیا یک \textit{عدد تگرگی}\LTRfootnote{Hailstone number}\cite{su} است یا نه.
 
@@ -111,22 +117,33 @@ assert(found && "Car could not be found in database");
 
     \textit{حدس کولاتز}\LTRfootnote{Collatz conjecture} بیان می‌کند که همهٔ اعداد مثبت تگرگی‌اند.
 
-    سعی کنید جز حالت بدیهی ۰، مورد آزمون دیگری بیابید که تابعی که در اختیارتان قرار گرفته است در آن شکست بخورد. اگر این سؤال در زبان \lr{Python} مطرح شده بود می‌توانستید برای آن پاسخی بیابید؟
+    سعی کنید جز حالت بدیهی ۰، مورد آزمون دیگری بیابید که تابعی که در اختیارتان قرار گرفته است در آن شکست بخورد.
+    اگر این سؤال در زبان \lr{Python} مطرح شده بود می‌توانستید برای آن پاسخی بیابید؟
+    آیا می‌توانید کد آزمون زبان \lr{C++} را طوری بنویسید که مستقل از معماری ماشین در حال استفاده نتیجهٔ مورد نظر را تولید کند؟
 
     \subsection{نحوهٔ تحویل}
 
     \begin{itemize}
-    \item فایل‌های برنامهٔ خود را با نام‌های \lr{\textit{TriangleTest.cpp}} و \lr{\textit{GetAvgOfVectorTest.cpp}} در صفحهٔ \lr{CECM} درس در \href{https://cecm.ut.ac.ir/mod/assign/view.php?id=76411}{بخش مربوط} بارگذاری کنید.\par
+    \item فایل‌های برنامهٔ خود را با نام‌های \lr{\path{TriangleTest.cpp}} و \lr{\path{GetAvgOfVectorTest.cpp}} در صفحهٔ \lr{CECM} درس بارگذاری کنید.
+
     نیازی به تحویل آزمون تابع \lstinline{satisfies_hailstone} نیست.
-    \item به فرمت و نام فایل‌های خود دقت کنید. از بارگذاری فایل فشرده خودداری کنید.\par
-    توجه داشته باشید که با توجه به تست خودکار کدهای شما، عدم رعایت این نکات ممکن است منجر به از دست دادن همه یا بخش زیادی از نمرهٔ شما بشود.
+
+    \item آزمون‌های شما باید الزاماً با استفاده از چهارچوب آزمون \lr{Catch2} نوشته شده باشند.
+    حتماً با استفاده از \lr{\lstinline{CATCH_CONFIG_MAIN}} اجازه بدهید چهارچوب آزمون خودش تابع \lr{\lstinline{main}} را تولید کند.
+    به نمونهٔ بارگذاری‌شده از آزمون کلاس \lr{\lstinline{Person}} دقت کنید.
+    
+    \item به فرمت و نام فایل‌های خود دقت کنید. از بارگذاری فایل فشرده خودداری کنید.
+
+    \item توجه داشته باشید که با توجه به تست خودکار کدهای شما، عدم رعایت نکات مذکور ممکن است منجر به از دست دادن همه یا بخش زیادی از نمرهٔ شما بشود.
+    
     \item برنامه‌ی شما باید در سیستم‌عامل لینوکس و با مترجم g++ با استاندارد \lr{C++11} ترجمه و در زمان معقول اجرا شود.
+    
     \item هدف این تمرین یادگیری شماست. لطفاً تمرین را خودتان انجام دهید. در صورت کشف تقلب مطابق قوانین درس با آن برخورد خواهد شد.
     \end{itemize}
 
     \begin{thebibliography}{9}
     \begin{latinitems}
-    \bibitem{alex17} Alex. 2017. Assert and \lstinline{static_assert}. Retrieved from \url{https://www.learncpp.com/cpp-tutorial/7-12a-assert-and-static_assert/}.
+    % \bibitem{alex17} Alex. 2017. Assert and \lstinline{static_assert}. Retrieved from \url{https://www.learncpp.com/cpp-tutorial/7-12a-assert-and-static_assert/}.
     \bibitem{dietrich14} Erik Dietrich. 2014. Introduction to Unit Testing (Don’t Worry, Your Secret is Safe with Me). Retrived from \url{https://daedtech.com/introduction-to-unit-testing-dont-worry-your-secret-is-safe-with-me/}.
     \bibitem{su} Francis E. Su, \textit{et al.} ``Hailstone Numbers.'' In \textit{Math Fun Facts}. Retrived from \url{https://www.math.hmc.edu/funfacts/ffiles/10008.5.shtml}.
     % \bibitem{sumner} Nick Sumner. Exercise: Unit Testing with Google Test. Retrived from \url{http://www.cs.sfu.ca/~wsumner/teaching/exercise-unit-tests.html}.

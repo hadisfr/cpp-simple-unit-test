@@ -1,38 +1,15 @@
 #include "Person.hpp"
-#include <cassert>
 #include <stdexcept>
 #include <string>
 
-class PersonTest {
-private:
-  void get_fullname_test();
-  void constructor_empty_firstname_test();
+#define CATCH_CONFIG_MAIN
+#include "../catch.hpp"
 
-public:
-  void run();
-};
-
-void PersonTest::get_fullname_test() {
+TEST_CASE("`get_fullname` test") {
   Person person("Edsger", "Dijkstra");
-  assert(person.get_fullname() == "Edsger Dijkstra");
+  REQUIRE(person.get_fullname() == "Edsger Dijkstra");
 }
 
-void PersonTest::constructor_empty_firstname_test() {
-  try {
-    Person person("", "Dijkstra");
-    assert(false);
-  } catch (std::invalid_argument) {
-  }
-}
-
-void PersonTest::run() {
-  get_fullname_test();
-  constructor_empty_firstname_test();
-}
-
-int main(int argc, char const *argv[]) {
-  PersonTest person_test;
-  person_test.run();
-
-  return 0;
+TEST_CASE("constructor empty firstname test") {
+  REQUIRE_THROWS_AS(Person("", "Dijkstra"), std::invalid_argument);
 }
