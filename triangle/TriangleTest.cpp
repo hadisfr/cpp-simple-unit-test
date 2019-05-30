@@ -1,5 +1,6 @@
 #include "Triangle.hpp"
-#include <cassert>
+#define CATCH_CONFIG_MAIN
+#include "../catch.hpp"
 #include <cmath>
 #include <stdexcept>
 
@@ -20,120 +21,63 @@ int TriangleUnderTest::get_side2() const { return side2; }
 
 int TriangleUnderTest::get_side3() const { return side3; }
 
-class TriangleTest {
-private:
-  void constructor_happy_test();
-  void constructor_inequality_equal_test();
-  void constructor_inequality_equal_invalid_order_test();
-  void constructor_inequality_reverse_test();
-  void constructor_inequality_reverse_invalid_order_test();
-  void constructor_second_longest_test();
-  void constructor_third_longest_test();
-  void get_perimeter_test();
-  void get_area_test();
-  void get_kind_isosceles_test();
-  void get_kind_equilateral_test();
-  void get_kind_scalene_test();
-
-public:
-  void run();
-};
-
-void TriangleTest::constructor_happy_test() {
+TEST_CASE("constructor happy test") {
   TriangleUnderTest triangle(5, 4, 3);
-  assert((triangle.get_side1() == 5 && triangle.get_side2() == 4 &&
-          triangle.get_side3() == 3));
+  REQUIRE((triangle.get_side1() == 5 && triangle.get_side2() == 4 &&
+           triangle.get_side3() == 3));
 }
 
-void TriangleTest::constructor_inequality_equal_test() {
-  try {
-    TriangleUnderTest triangle(10, 4, 6);
-    assert(false);
-  } catch (std::invalid_argument) {
-  }
+TEST_CASE("constructor inequality equal test") {
+  REQUIRE_THROWS_AS(TriangleUnderTest(10, 4, 6), std::invalid_argument);
 }
 
-void TriangleTest::constructor_inequality_equal_invalid_order_test() {
-  try {
-    TriangleUnderTest triangle(4, 10, 6);
-    assert(false);
-  } catch (std::invalid_argument) {
-  }
+TEST_CASE("constructor inequality equal invalid order test") {
+  REQUIRE_THROWS_AS(TriangleUnderTest(4, 10, 6), std::invalid_argument);
 }
 
-void TriangleTest::constructor_inequality_reverse_test() {
-  try {
-    TriangleUnderTest triangle(10, 3, 6);
-    assert(false);
-  } catch (std::invalid_argument) {
-  }
+TEST_CASE("constructor inequality reverse test") {
+  REQUIRE_THROWS_AS(TriangleUnderTest(10, 3, 6), std::invalid_argument);
 }
 
-void TriangleTest::constructor_inequality_reverse_invalid_order_test() {
-  try {
-    TriangleUnderTest triangle(3, 10, 6);
-    assert(false);
-  } catch (std::invalid_argument) {
-  }
+TEST_CASE("constructor inequality reverse invalid order test") {
+  REQUIRE_THROWS_AS(TriangleUnderTest(3, 10, 6), std::invalid_argument);
 }
 
-void TriangleTest::constructor_second_longest_test() {
+TEST_CASE("constructor second longest test") {
   TriangleUnderTest triangle(4, 5, 3);
-  assert((triangle.get_side1() == 5 &&
-          ((triangle.get_side2() == 4 && triangle.get_side3() == 3) ||
-           (triangle.get_side2() == 3 && triangle.get_side3() == 4))));
+  REQUIRE((triangle.get_side1() == 5 &&
+           ((triangle.get_side2() == 4 && triangle.get_side3() == 3) ||
+            (triangle.get_side2() == 3 && triangle.get_side3() == 4))));
 }
 
-void TriangleTest::constructor_third_longest_test() {
+TEST_CASE("constructor third longest test") {
   TriangleUnderTest triangle(4, 3, 5);
-  assert((triangle.get_side1() == 5 &&
-          ((triangle.get_side2() == 4 && triangle.get_side3() == 3) ||
-           (triangle.get_side2() == 3 && triangle.get_side3() == 4))));
+  REQUIRE((triangle.get_side1() == 5 &&
+           ((triangle.get_side2() == 4 && triangle.get_side3() == 3) ||
+            (triangle.get_side2() == 3 && triangle.get_side3() == 4))));
 }
 
-void TriangleTest::get_perimeter_test() {
+TEST_CASE("get_perimeter test") {
   TriangleUnderTest triangle(4, 3, 5);
-  assert(triangle.get_perimeter() == 12);
+  REQUIRE(triangle.get_perimeter() == 12);
 }
 
-void TriangleTest::get_area_test() {
+TEST_CASE("get_area test") {
   TriangleUnderTest triangle(4, 3, 5);
-  assert(abs(triangle.get_area() - 6) < 0.001);
+  REQUIRE(abs(triangle.get_area() - 6) < 0.001);
 }
 
-void TriangleTest::get_kind_isosceles_test() {
+TEST_CASE("get_kind isosceles test") {
   TriangleUnderTest triangle(4, 4, 5);
-  assert(triangle.get_kind() == Triangle::Kind::ISOSCELES);
+  REQUIRE(triangle.get_kind() == Triangle::Kind::ISOSCELES);
 }
 
-void TriangleTest::get_kind_equilateral_test() {
+TEST_CASE("get_kind equilateral test") {
   TriangleUnderTest triangle(4, 4, 4);
-  assert(triangle.get_kind() == Triangle::Kind::EQUILATERAL);
+  REQUIRE(triangle.get_kind() == Triangle::Kind::EQUILATERAL);
 }
 
-void TriangleTest::get_kind_scalene_test() {
+TEST_CASE("get_kind scalene test") {
   TriangleUnderTest triangle(4, 3, 5);
-  assert(triangle.get_kind() == Triangle::Kind::SCALENE);
-}
-
-void TriangleTest::run() {
-  constructor_happy_test();
-  constructor_inequality_equal_test();
-  constructor_inequality_equal_invalid_order_test();
-  constructor_inequality_reverse_test();
-  constructor_inequality_reverse_invalid_order_test();
-  constructor_second_longest_test();
-  constructor_third_longest_test();
-  get_perimeter_test();
-  get_area_test();
-  get_kind_isosceles_test();
-  get_kind_equilateral_test();
-  get_kind_scalene_test();
-}
-
-int main(int argc, char const *argv[]) {
-  TriangleTest triangle_test;
-  triangle_test.run();
-
-  return 0;
+  REQUIRE(triangle.get_kind() == Triangle::Kind::SCALENE);
 }
