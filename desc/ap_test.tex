@@ -59,8 +59,8 @@
     همچنین، این کلاس تابعی به نام \lr{\lstinline{get_fullname}} دارد که قرار است با به هم چسباندن نام و نام خانوادگی افراد نام کامل آن‌ها را برگرداند:
     \begin{latin}\lstinputlisting[firstline=16, lastline=16]{../person/Person.cpp}\end{latin}
 
-    حال کلاس آزمونی به نام \lr{\lstinline{PersonTest}} برای آزمودن کلاس \lr{\lstinline{Person}} می‌نویسیم:
-    \begin{latin}\lstinputlisting[numbers=left,frame=leftline]{../person/PersonTest.cpp}\end{latin}
+    حال کلاس آزمونی به نام \lr{\lstinline{person_test}} برای آزمودن کلاس \lr{\lstinline{Person}} می‌نویسیم:
+    \begin{latin}\lstinputlisting[numbers=left,frame=leftline]{../person/person_test.cpp}\end{latin}
 
     این کلاس شامل تعدادی مورد~آزمون\LTRfootnote{testcase} است که هر یک چیزی را می‌آزمایند. چهارچوب آزمون ‐~به دلیل تعریف~شدن \lr{\lstinline{CATCH_CONFIG_MAIN}}~‐ یک تابع \lr{\lstinline{main}} می‌سازد که همهٔ موارد آزمون را اجرا می‌کند.
 
@@ -94,14 +94,14 @@
 
     اگر نیاز دارید به متغیرهای داخلی کلاس \lr{\lstinline{Triangle}} دسترسی پیدا کنید می‌توانید کلاسی مانند \lr{\lstinline{TriangleUnderTest}} از آن مشتق کنید و به این کلاس گیرنده‌ها\LTRfootnote{getter} یا متدهای مورد نیاز خودتان را اضافه کنید.
 
-    آزمون‌های خود و همهٔ نیازمندی‌های آن‌ها را \textit{فقط} در یک فایل به نام \lr{\path{TriangleTest.cpp}} بنویسید. این فایل در کنار فایل‌های \lr{\path{catch.hpp}} و \lr{\path{Triangle.hpp}} و به همراه نسخه‌های مختلفی از فایل \lr{\path{Triangle.cpp}} ترجمه خواهد شد و آزمون‌های شما ارزیابی خواهد گردید.
+    آزمون‌های خود و همهٔ نیازمندی‌های آن‌ها را \textit{فقط} در یک فایل به نام \lr{\path{triangle_test.cpp}} بنویسید. این فایل در کنار فایل‌های \lr{\path{catch.hpp}} و \lr{\path{Triangle.hpp}} و به همراه نسخه‌های مختلفی از فایل \lr{\path{Triangle.cpp}} ترجمه خواهد شد و آزمون‌های شما ارزیابی خواهد گردید.
     
     \subsubsection[تابع get\_avg\_of\_vector]{تابع \lr{\lstinline[basicstyle=\ttfamily]{get_avg_of_vector}}}
 
     تابع \lr{\lstinline{get_avg_of_vector}} با دریافت یک بردار\LTRfootnote{vector} از اعداد صحیح، میانگین اعشاری آن‌ها را محاسبه می‌کند.
     علاوه بر پیاده‌سازی اصلی، چند نسخهٔ مختلف از پیاده‌سازی این تابع در اختیار شما قرار گرفته است. آزمون‌هایی برای این تابع طراحی کنید که پیاده‌سازی‌های اشتباه حداقل در یکی از آن‌ها شکست بخورند و پیاده‌سازی‌های درست همه را با موفقیت بگذرانند.
 
-    آزمون‌های خود و همهٔ نیازمندی‌های آن‌ها را \textit{فقط} در یک فایل به نام \lr{\path{GetAvgOfVectorTest.cpp}} بنویسید. این فایل در کنار فایل‌های \lr{\path{catch.hpp}} و \lr{\path{get_avg_of_vector.hpp}} و به همراه نسخه‌های مختلف فایل \lr{\path{get_avg_of_vector.cpp}} ترجمه خواهد شد و آزمون‌های شما ارزیابی خواهد گردید.
+    آزمون‌های خود و همهٔ نیازمندی‌های آن‌ها را \textit{فقط} در یک فایل به نام \lr{\path{get_avg_of_vector_test.cpp}} بنویسید. این فایل در کنار فایل‌های \lr{\path{catch.hpp}} و \lr{\path{get_avg_of_vector.hpp}} و به همراه نسخه‌های مختلف فایل \lr{\path{get_avg_of_vector.cpp}} ترجمه خواهد شد و آزمون‌های شما ارزیابی خواهد گردید.
 
     \subsubsection[تابع satisfies\_hailstone]{تابع \lr{\lstinline[basicstyle=\ttfamily]{satisfies_hailstone}}\hfill\normalsize\mdseries اختیاری}
 
@@ -124,7 +124,7 @@
     \subsection{نحوهٔ تحویل}
 
     \begin{itemize}
-    \item فایل‌های برنامهٔ خود را با نام‌های \lr{\path{TriangleTest.cpp}} و \lr{\path{GetAvgOfVectorTest.cpp}} در صفحهٔ \lr{CECM} درس بارگذاری کنید.
+    \item فایل‌های برنامهٔ خود را با نام‌های \lr{\path{triangle_test.cpp}} و \lr{\path{get_avg_of_vector_test.cpp}} در صفحهٔ \lr{CECM} درس بارگذاری کنید.
 
     نیازی به تحویل آزمون تابع \lstinline{satisfies_hailstone} نیست.
 
