@@ -74,8 +74,8 @@ function judge_avg {
     problem="get_avg_of_vector"
     src="get_avg_of_vector"
     header="get_avg_of_vector.hpp"
-    all=("get_avg_of_vector.cpp" "get_avg_of_vector_v1.cpp" "get_avg_of_vector_v2.cpp" "get_avg_of_vector_v3.cpp" "get_avg_of_vector_v4.cpp" "get_avg_of_vector_v5.cpp")
-    should_fail=("get_avg_of_vector_v1.cpp" "get_avg_of_vector_v2.cpp" "get_avg_of_vector_v4.cpp")
+    all=("get_avg_of_vector.cpp" "get_avg_of_vector_v1.cpp" "get_avg_of_vector_v3.cpp" "get_avg_of_vector_v5.cpp")
+    should_fail=("get_avg_of_vector_v1.cpp")
     ((all_to_pass+=${#all[@]}))
     judge
     ((all_passed+=passed))
