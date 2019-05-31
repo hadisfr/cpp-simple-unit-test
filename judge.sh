@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
+# Usage:
+# $ tree codes/
+# codes/
+# └── hadi
+#     ├── get_avg_of_vector_test.cpp
+#     └── triangle_test.cpp
+#
+# 1 directory, 2 files
+# $ ./judge.sh codes/hadi/
+
+
 RED="\033[31m"
 GREEN="\033[32m"
 YELLOW="\033[33m"
