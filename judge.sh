@@ -26,9 +26,10 @@ verbose=false
 function judge {
     echo -e "${B}${problem} Test${NC}"
     code="${dir_under_test}/${problem}_test.cpp"
-    sed -i "s|#include\s*\"${header}\"|#include\ \"${PWD}/${src}/${header}\"|g" "$code"
-    sed -i "s|#include\s*\"catch.hpp\"|#include\ \"${PWD}/catch.hpp\"|g" "$code"
+    sed -i "s|#include\s*\".*${header}\"|#include\ \"${PWD}/${src}/${header}\"|g" "$code"
+    sed -i "s|#include\s*\".*catch.hpp\"|#include\ \"${PWD}/catch.hpp\"|g" "$code"
     sed -i "s|#include\s*<catch2/catch.hpp>|#include\ \"${PWD}/catch.hpp\"|g" "$code"
+    sed -i "s|#include\s*<.*catch.hpp>|#include\ \"${PWD}/catch.hpp\"|g" "$code"
     passed=0
     if ! ${CC} -c "$code" -o "${code/%.cpp/.o}"; then
         echo -e "${RED}compile error${NC}"
