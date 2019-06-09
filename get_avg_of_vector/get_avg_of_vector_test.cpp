@@ -6,12 +6,12 @@
 
 TEST_CASE("happy test") {
   std::vector<int> v = {1, 2};
-  REQUIRE(abs(get_avg_of_vector(v) - 1.5) < 0.001);
+  REQUIRE(Approx(get_avg_of_vector(v)) == 1.5);
 }
 
 TEST_CASE("single element test") {
   std::vector<int> v = {3};
-  REQUIRE(abs(get_avg_of_vector(v) - 3) < 0.001);
+  REQUIRE(Approx(get_avg_of_vector(v)) == 3);
 }
 
 TEST_CASE("empty vector test") {
