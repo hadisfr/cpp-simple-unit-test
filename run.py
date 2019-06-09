@@ -40,7 +40,7 @@ def get_submission_list(addr):
 def get_score(judge_addr, submission_addr):
     cmd = [judge_addr, submission_addr]
     if VERBOSE:
-        print("\x1b[32m$\x1b[0m %s" % " ".join(cmd), file=stderr)
+        print("\x1b[32m$\x1b[0m %s" % " ".join(cmd), file=stderr, end=" ")
     raw_res = re.compile(
         r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]'
     ).sub(
@@ -53,6 +53,8 @@ def get_score(judge_addr, submission_addr):
         r"Overall passed: ([0-9]+) of ([0-9]+) \([0-9.]+%\)",
         overall_res
     )[0][0])
+    if VERBOSE:
+        print("score: %s" % score, file=stderr)
     return (score, log)
 
 
